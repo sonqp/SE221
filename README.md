@@ -1,6 +1,6 @@
 # Software Engineering Project - UWC 2.0
 
-Member:
+Members:
 - Le Duy Hao
 - Do Thanh Minh
 - Tran Minh Tuan
