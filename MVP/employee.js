@@ -34,16 +34,23 @@ function getEmployeeList () {
     return list();
 }
 function selectEmployee(eId){
-    if (getSelectedEmployees().includes(eId)) return alert("Employee "+ eId + " is already added before");
+    if (getSelectedEmployees().includes(eId)) return alert("Nhân viên "+ eId + " đã được thêm trước đó");
+    else if (!document.getElementById(employees.get(eId).role).checked)  return alert("Nhân viên "+ eId + " đã chọn có vai trò Janitor hoặc Collector không tương thích");
     var temp = document.getElementById("employeeSelect");
     var option = document.createElement("option");
       option.text = 'Employee: '+employees.get(eId).fullName;
       option.value = eId;
+      document.getElementById("collector").disabled = true;
+      document.getElementById("janitor").disabled = true;
       temp.add(option);
 }
 function removeSelectedEmployee(){
         var temp = document.getElementById("employeeSelect");
         temp.remove(temp.selectedIndex);
+        if (temp.length == 0){
+          document.getElementById("collector").disabled= false;
+          document.getElementById("janitor").disabled= false;
+        }
 }
 function getSelectedEmployees(){
         const arr = [];
@@ -58,13 +65,17 @@ document.getElementById("table-div").innerHTML= `
     <table id="table_id" class="display">
     <thead>
         <tr>
-            <th>Employee ID</th>
-            <th>Name</th>
-            <th>Group</th>
-            <th>Vehicle</th>
-            <th>Vehicle ID</th>
-            <th>Phone</th>
-            <th><button onclick = 'alert("not implement yet")'>Select all</button></th>
+            <th>ID Nhân viên</th>
+            <th>Tên</th>
+            <th>Nhóm</th>
+            <th>Phương tiện</th>
+            <th>ID Phương tiện</th>
+            <th>SĐT</th>
+            <th>
+              <button class="select_all" onclick='alert("Không thể chọn tất cả vì các vai trò janitor hoặc collector không đồng nhất")'>
+                Chọn tất cả
+              </button>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -80,49 +91,86 @@ var table = $('#table_id').DataTable( {
     columns: [
     { data: "userid"},
     { data: "fullName"},
-    { data: "group", defaultContent: "No group"},
-    { data: "vehicleId",render: function (data) {return `<a onClick="getVehicleById('${data}');">${getVehicleById(data).name}</a>`}},
+    { 
+      data: "group",
+      defaultContent: "No group"
+    },
+    { 
+      data: "vehicleId",
+      render: function (data) {
+        return `<a onClick="getVehicleById('${data}');">${getVehicleById(data).name}</a>`
+      }
+    },
     { data: "vehicleId"},
-    { data: "phone" },
-    { data:"userid", render: function (data){return `<button onclick = "selectEmployee('${data}')" >Select</button>`}, orderable:false}
+    { data: "phone"},
+    { data:"userid", 
+      render: function (data){
+        return `<button class="navigate" onclick="selectEmployee('${data}')">
+          Chọn</button>`
+      }, 
+      orderable:false
+    }
   ]
 } );
+if(params.get("employee")) selectEmployee(params.get("employee"));
 }
 function generateSelectedEmployeeTable(arr){
     document.getElementById("table-div").innerHTML= `
         <table id="table_id" class="display">
         <thead>
             <tr>
-                <th>Employee ID</th>
-                <th>Name</th>
-                <th>Group</th>
-                <th>Vehicle</th>
-                <th>Vehicle ID</th>
-                <th>Phone</th>
+                <th>ID Nhân viên</th>
+                <th>Tên</th>
+                <th>Nhóm</th>
+                <th>Phương tiện</th>
+                <th>ID Phương tiện</th>
+                <th>SĐT</th>
                 <th></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id ="tbody_id">
         </tbody>
     </table>
     `
     var table = $('#table_id').DataTable( {
-        ajax: {
-            url: 'employee.json',
-            dataSrc: function(json) {
-                return json.filter(function(item){
-                    return arr.includes(item.userid);         
-                    });
-        }},
-        columnDefs:[ ],
-        columns: [
+      ajax: {
+        url: 'employee.json',
+        dataSrc: function(json) {
+          return json.filter(function(item){
+            return arr.includes(item.userid);         
+          });
+        }
+      },
+      columnDefs:[ ],
+      columns: [
         { data: "userid"},
         { data: "fullName"},
         { data: "group", defaultContent: "No group"},
-        { data: "vehicleId",render: function (data) {return `<a onClick="getVehicleById('${data}');">${getVehicleById(data).name}</a>`}},
-        { data: "vehicleId"},
+        { 
+          data: "vehicleId",
+          render: function (data) {
+            return `<a onClick="getVehicleById('${data}');">${data?getVehicleById(data).name:"Not assigned"}</a>`
+          }
+        },
+        { data: "vehicleId", defaultContent:"No data"},
         { data: "phone" },
-        { data:"userid", render: function (data){return `<button onclick = "selectEmployee('${data}')" >Assign Vehicle</button>`}, orderable:false}
+        { 
+          data:"userid",
+          render: function (data){
+            return `<button class="navigate" ${(employees.get(data).vehicleId)?"":'style="background-color:red"'}  onclick = "window.open('assign.html?role=${employees.get(data).role}&userid=${data}','mywindow','status=1')">Phân công phương tiện</button>`
+          }, 
+          orderable:false
+        }
       ]
     } );
+}
+function handle(i,d){
+  $('#table_id').DataTable().rows().every(function(rowIdx, tableLoop, rowLoop) {
+    // The checks the id of the current row
+    if (this.data()["userid"] == i) {
+     let row = document.getElementById("tbody_id").getElementsByTagName("tr")[rowIdx]
+      row.getElementsByTagName("td")[3].innerHTML=vehicles.get(d).name  
+      row.getElementsByTagName("td")[4].innerHTML=d
+    }
+  })
 }

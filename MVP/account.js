@@ -14,4 +14,4 @@ function Account(id, password, role){
         role: role,
     }
 }
-console.log(accounts);
+//console.log(accounts);

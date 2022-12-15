@@ -13,7 +13,7 @@ function login(username, password){
             sessionStorage.setItem("role",account.role);
             // loadDataFromFile();
             // saveDataToSessionStorage();
-            alert("Login suceesful");
+            //alert("Login suceesful");
             window.location.replace("task.html");
         }
         else alert("Wrong account");
@@ -84,12 +84,10 @@ function saveDataToSessionStorage(){
     sessionStorage.setItem("vehicles",employees);
     sessionStorage.setItem("tasks",tasks);
     sessionStorage.setItem("mcps",mcps);
-    
 }
 function loadDataFromSessionStorage(){
     loadAllEmployees();
     loadAllMcps();
     loadAllTasks();
     loadAllVehicles();
- 
 }

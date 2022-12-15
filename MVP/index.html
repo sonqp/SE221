@@ -7,26 +7,71 @@
 <html>
   <head>
     <title>UWC 2.0</title>
+    <link rel="icon" href="src/assets/icon.png">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <script type="module" src="index.ts"></script>
+    <script type="module" src="index.js"></script>
   </head>
-  <body  onload = "loadOptions()">
-    <button onclick = "login(prompt('userid:'),prompt('password:'));"> Log in </button>
-    <button onclick = "loginAs();"> Log in as </button>
-    <select id = "accountSelect"> </select>
-    <button onclick = "logOut();"> Log out </button>
-    <div id="map"></div>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
-      defer
-    ></script>
-    <script src = "import.js"></script>
-    <script src = "employee.js"></script>
-    <script src = "vehicle.js"></script>
-    <script src = "task.js"></script>
-    <script src = "mcp.js"></script>
-    <script src = "auth.js"></script>
+
+  <body onload="loadOptions()">
+    <div class="home-container">
+      <div class="left">
+        <img class="image" src="src/assets/landingpage-PhotoRoom.png" alt="">
+      </div>
+      <div class="right">
+        <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+        <h1><strong>CÔNG TY MÔI TRƯỜNG <br><span>UWC 2.0</span></strong></h1>
+        
+        <div class="box">
+          <h2>Đăng nhập</h2>
+          <div class="in">
+            <label for="name">Email/ID</label>
+            <div>
+              <input type="text" id="emailLogin" placeholder="Email" value = "000001">
+            </div>
+          </div>  
+
+          <div class="in">
+            <label for="name">Mật khẩu</label>
+            <div>
+              <input class="pass" id="passwordLogin" type="password" placeholder="Mật khẩu" value="12345678">
+            </div>
+          </div>
+
+          <div class="check_bar">
+            <div>
+              <input type="checkbox" name="" id="">
+              <label for="">Ghi nhớ đăng nhập</label>
+            </div>
+            <a href="#">Quên mật khẩu?</a>
+          </div>
+          <button 
+            class="log" 
+            onclick = "login(document.getElementById('emailLogin').value,
+                            document.getElementById('passwordLogin').value);">
+            Đăng nhập
+          </button>
+        </div>
+        <div id="map"></div>
+        <script
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+          defer
+        ></script>
+        <script src = "import.js"></script>
+        <script src = "employee.js"></script>
+        <script src = "vehicle.js"></script>
+        <script src = "task.js"></script>
+        <script src = "mcp.js"></script>
+        <script src = "auth.js"></script>
+      </div>
+    <!-- <button onclick = "logi
+      </div>
+      
+      nAs();"> Log in as </button> -->
+    <!-- <select id = "accountSelect"> </select> -->
+    <!-- <button onclick = "logOut();"> Đăng xuất </button> -->
+    
   </body>
 </html>

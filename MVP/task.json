@@ -202,14 +202,6 @@
     "timeStart": 1666456571,
     "timeDone": null
 },
-
-
-
-
-
-
-
-
 {
     "taskId": "1665849222",
     "role" : "collector",
@@ -224,10 +216,6 @@
     "timeStart": 1665937198,
     "timeDone": 1665937199
 },
-
-
-
-
 {
     "taskId": "1665849243",
     "role" : "collector",
@@ -260,7 +248,7 @@
     "taskId": "1665849250",
     "role" : "collector",
     "employeeId": "000007",
-    "MCPs" : ["123","321","444","999","321"],
+    "MCPs" : ["123","321","444","999"],
     "description":"You must hurry up",
     "timeCreated": 1665849250,
     "vehicleId":"321",
